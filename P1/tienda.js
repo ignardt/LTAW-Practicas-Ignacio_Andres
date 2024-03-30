@@ -1,23 +1,37 @@
 
-// Cargar módulos nativos de Node.js
-const http = require('http'); // Para crear el servidor HTTP.
-const fs = require('fs'); // Para interactuar con el sistema de archivos.
-const path = require('path'); // Para manipular rutas de archivos.
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-// Definir el puerto en el que el servidor estará escuchando.
 const port = 9090;
 
-// Crear el servidor HTTP.
 http.createServer((req, res) => {
-    console.log(`Request for ${req.url}`); // Loguear la solicitud para propósitos de debug.
+    console.log(`Request for ${req.url}`);
 
-    // Construir la ruta del archivo solicitado. Si se solicita "/", servir "index.html".
-    let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+    let filePath;
 
-    // Obtener la extensión del archivo para determinar el tipo de contenido.
+    // Determinar la ruta del archivo basada en la solicitud URL.
+    switch (req.url) {
+        case '/':
+            filePath = path.join(__dirname, 'index.html');
+            break;
+        case '/producto1':
+            filePath = path.join(__dirname, 'Productos', 'Producto1', 'producto1.html');
+            break;
+        case '/producto2':
+            filePath = path.join(__dirname, 'producto2.html');
+            break;
+        case '/producto3':
+            filePath = path.join(__dirname, 'producto3.html');
+            break;
+        default:
+            // Para cualquier otra ruta, construir la ruta del archivo solicitado.
+            filePath = path.join(__dirname, req.url);
+            break;
+    }
+
     let extname = String(path.extname(filePath)).toLowerCase();
 
-    // Mapa de posibles tipos de contenido según la extensión del archivo.
     let mimeTypes = {
         '.html': 'text/html',
         '.js': 'text/javascript',
@@ -25,17 +39,16 @@ http.createServer((req, res) => {
         '.png': 'image/png',
         '.jpg': 'image/jpg',
         '.gif': 'image/gif'
+        // Añade más tipos MIME según sea necesario.
     };
 
-    // Definir el tipo de contenido de la respuesta basado en la extensión del archivo solicitado.
     let contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    // Leer el archivo solicitado del sistema de archivos.
     fs.readFile(filePath, (error, content) => {
         if (error) {
             if (error.code == 'ENOENT') {
                 // Archivo no encontrado: servir la página 404.
-                fs.readFile('error.html', (error, content) => {
+                fs.readFile(path.join(__dirname, 'error.html'), (error, content) => {
                     res.writeHead(404, { 'Content-Type': 'text/html' });
                     res.end(content, 'utf-8');
                 });
@@ -51,6 +64,7 @@ http.createServer((req, res) => {
         }
     });
 }).listen(port, () => {
-    // El servidor comienza a escuchar en el puerto definido.
     console.log(`Server running at http://localhost:${port}/`);
 });
+
+
