@@ -36,10 +36,20 @@
             align-items: center; /* Alinear los productos verticalmente */
             flex-wrap: wrap; /* Permite la envoltura de elementos si no caben en una sola línea */
         }
+
+        .producto-enlace {
+            text-decoration: none; /* Quita el subrayado de los enlaces */
+            color: inherit; /* Hereda el color del texto del elemento padre */
+            display: flex; /* Hace que el enlace se comporte como un contenedor flex */
+            justify-content: center; /* Centra los elementos en el eje principal */
+            width: 20%; /* Igual que el ancho de .producto */
+            margin: 15px; /* Asegura que el margen sea aplicado fuera del enlace */
+            
+        }
+
         .producto {
-            width: 20%; /* Ancho de cada producto */
-            margin: 15px; /* Espacio alrededor de cada producto */
-            box-sizing: border-box; /* Incluye el padding y border dentro del ancho y alto */
+            width: 100%; /* Hace que el producto llene su contenedor */
+            box-sizing: border-box; /* Asegura que padding y border estén incluidos en el ancho/altura */
             text-align: center; /* Centra el texto debajo de las imágenes */
             background-color: rgb(255, 255, 255);
             border: 1px solid rgb(212, 184, 184);
@@ -58,26 +68,31 @@
     
     <div class="productos">
         <!-- Producto 1 -->
-        <div class="producto">
-            <img src="Productos/Producto1/producto1.jpg" alt="Rolling Stones" style="height: 200px;">
-            <h2>Let it Bleed</h2>
-            <p>Rolling Stones</p>
-            <a href="/Productos/Producto1/producto1.html">Comprar</a>
-        </div>
+        <a href="Productos/Producto1/producto1.html" class="producto-enlace">
+            <div class="producto">
+                <img src="Productos/Producto1/producto1.jpg" alt="Rolling Stones" style="height: 200px;">
+                <h2>Let it Bleed</h2>
+                <p>Rolling Stones</p>
+                
+            </div>
+        </a>
         <!-- Producto 2 -->
-        <div class="producto">
-            <img src="Productos/Producto2/producto2.jpg" alt="Earth Wind & Fire" style="height: 200px;">
-            <h2>Greatest Hits Vol.1</h2>
-            <p>Earth Wind & Fire</p>
-            <a href="/Productos/Producto2/producto2.html">Comprar</a>
-        </div>
+        <a href="Productos/Producto2/producto2.html" class="producto-enlace">
+            <div class="producto">
+                <img src="Productos/Producto2/producto2.jpg" alt="Earth Wind & Fire" style="height: 200px;">
+                <h2>Greatest Hits Vol.1</h2>
+                <p>Earth Wind & Fire</p>
+            </div>
+        </a>
         <!-- Producto 3 -->
-        <div class="producto">
-            <img src="Productos/Producto3/producto3.jpg" alt="Michael Jackson" style="height: 200px;">
-            <h2>Abbey Road</h2>
-            <p>The Beatles</p>
-            <a href="/Productos/Producto3/producto3.html">Comprar</a>
-        </div>
+        <a href="Productos/Producto3/producto3.html" class="producto-enlace">
+            <div class="producto">
+                <img src="Productos/Producto3/producto3.jpg" alt="Michael Jackson" style="height: 200px;">
+                <h2>Abbey Road</h2>
+                <p>The Beatles</p>
+                
+            </div>
+        </a>
     </div>
 </body>
 </html>
