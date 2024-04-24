@@ -1,0 +1,36 @@
+{
+    "Usuarios": [
+        {
+            "nombre": "root",
+            "nombre_real": "Administrador",
+            "correo": "admin@tienda.com"
+        },
+        {
+            "nombre": "usuario1",
+            "nombre_real": "Ignacio Andres",
+            "correo": "ignacio.andres@tienda.com"
+        }
+    ],
+    "Productos": [
+        {
+            "nombre": "Vinilo Let it Bleed",
+            "descripcion": "Artista: Rolling Stones, Año de Lanzamiento: 1969, Género: Rock",
+            "precio": 29.99,
+            "cantidad_en_stock": 10
+        },
+        {
+            "nombre": "Vinilo Greatest Hits Vol. 1",
+            "descripcion": "Artista: Earth Wind & Fire, Año de Lanzamiento: 1978, Género: Soul, Jazz, y Disco",
+            "precio": 34.99,
+            "cantidad_en_stock": 8
+        },
+        {
+            "nombre": "Vinilo AC/DC Live",
+            "descripcion": "Artista: AC/DC, Año de Lanzamiento: 1992, Género: Hard Rock",
+            "precio": 24.99,
+            "cantidad_en_stock": 15
+        }
+    ]
+}
+
+
