@@ -1,0 +1,48 @@
+body {
+    background-color: rgb(255, 251, 233);
+
+}
+.titulo {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    margin-top: 1%;
+}
+
+h2 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+p {
+    font-family: Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.productos {
+    margin-top: 3%;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+}
+
+.producto-enlace {
+    text-decoration: none; 
+    color: inherit; 
+    display: flex;
+    justify-content: center; 
+    width: 20%; 
+    margin: 15px;
+    
+}
+
+.producto {
+    width: 100%; 
+    box-sizing: border-box; 
+    text-align: center; 
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(212, 184, 184);
+}
+.producto img {
+    width: 50%; 
+    height: auto; 
+    margin-top: 20px;
+}
