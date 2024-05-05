@@ -22,9 +22,10 @@ io.on('connection', (socket) => {
         if (data.text.startsWith('/')) {
             handleCommand(data.text, socket);
         } else {
-            io.emit('message', { text: data.text, username: socket.username, fromServer: false });
+            io.emit('message', { text: data.text, username: socket.username, fromServer: false, id: socket.id });
         }
     });
+    
 
     socket.on('disconnect', () => {
         if (socket.username) {

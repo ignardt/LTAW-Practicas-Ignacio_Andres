@@ -1,4 +1,5 @@
 const socket = io();
+let mySocketId = null;
 
 function enterChat() {
     const username = document.getElementById('username').value.trim();
@@ -11,7 +12,10 @@ function enterChat() {
     }
 }
 
-// Escuchar mensajes del servidor
+socket.on('connect', () => {
+    mySocketId = socket.id;  // Almacena el ID del socket cuando el cliente se conecta
+});
+
 socket.on('message', function(message) {
     const messages = document.getElementById('messages');
     const item = document.createElement('li');
@@ -25,6 +29,12 @@ socket.on('message', function(message) {
     }
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+
+    // Reproducir sonido solo si el mensaje es de otro usuario
+    if (message.id !== mySocketId) {
+        const sound = document.getElementById('message-sound');
+        sound.play().catch(error => console.error('Error playing sound:', error));
+    }
 });
 
 // Enviar mensajes al servidor
