@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat en Vivo</title>
-    <style>
-        #messages { list-style-type: none; margin: 0; padding: 0; }
-        #messages li { padding: 8px; margin-bottom: 2px; background-color: #f3f3f3; }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="input" autocomplete="off"><button>Enviar</button>
-    </form>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat en Vivo</h1>
+        </header>
+        <ul id="messages" class="chat-messages"></ul>
+        <form id="form" class="chat-form">
+            <input id="input" autocomplete="off" placeholder="Escribe tu mensaje aquí...">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="chat.js"></script>
 </body>
 </html>
+
