@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat en Vivo</title>
-    <link rel="stylesheet" href="index.css">
+
 </head>
 <body>
-    <div class="chat-container">
+    <div id="login-page">
+        <input type="text" id="username" placeholder="Ingresa tu nombre" required>
+        <button onclick="enterChat()">Entrar al Chat</button>
+    </div>
+    <div id="chat-container" style="display:none;">
         <header class="chat-header">
             <h1>Chat en Vivo</h1>
         </header>

@@ -12,29 +12,27 @@ app.use(express.static('.'));
 let userCount = 0;  // Para mantener el conteo de los usuarios conectados
 
 io.on('connection', (socket) => {
-    userCount++;  // Incrementar cuando un usuario se conecta
-    console.log('Nuevo usuario conectado');
+    socket.on('joinChat', (username) => {
+        socket.username = username;
+        socket.emit('message', { text: `¡Bienvenido al chat, ${username}!`, fromServer: true });
+        socket.broadcast.emit('message', { text: `${username} se ha conectado al chat`, fromServer: true });
+    });
 
-    // Enviar mensaje de bienvenida como un mensaje del servidor
-    socket.emit('message', { text: 'Bienvenido al Chat!', fromServer: true });
-
-    // Notificar a otros usuarios sobre una nueva conexión como un mensaje del servidor
-    socket.broadcast.emit('message', { text: 'Se ha conectado un nuevo usuario', fromServer: true });
-
-    socket.on('sendMessage', (message) => {
-        if (message.startsWith('/')) {
-            handleCommand(message, socket);
+    socket.on('sendMessage', (data) => {
+        if (data.text.startsWith('/')) {
+            handleCommand(data.text, socket);
         } else {
-            io.emit('message', { text: message, fromServer: false, from: socket.id });
+            io.emit('message', { text: data.text, username: socket.username, fromServer: false });
         }
     });
 
-    // Manejar desconexión de usuarios
     socket.on('disconnect', () => {
-        userCount--;  // Decrementar cuando un usuario se desconecta
-        io.emit('message', { text: 'Un usuario ha dejado el chat', fromServer: true });
+        if (socket.username) {
+            io.emit('message', { text: `${socket.username} ha dejado el chat`, fromServer: true });
+        }
     });
 });
+
 
 function handleCommand(message, socket) {
     switch (message.trim()) {
