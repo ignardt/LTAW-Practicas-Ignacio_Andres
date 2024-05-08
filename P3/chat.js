@@ -37,6 +37,17 @@ socket.on('message', function(message) {
     }
 });
 
+socket.on('updateUserList', function(users) {
+    const userList = document.getElementById('users');
+    userList.innerHTML = '';  // Limpiar la lista actual
+    users.forEach(user => {
+        const userElement = document.createElement('li');
+        userElement.textContent = user;
+        userList.appendChild(userElement);
+    });
+});
+
+
 // Enviar mensajes al servidor
 const form = document.getElementById('form');
 const input = document.getElementById('input');

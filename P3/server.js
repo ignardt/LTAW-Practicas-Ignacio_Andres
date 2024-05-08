@@ -11,11 +11,25 @@ app.use(express.static('.'));
 
 let userCount = 0;  // Para mantener el conteo de los usuarios conectados
 
+const users = {};  // Objeto para mantener un registro de usuarios y sus sockets
+
 io.on('connection', (socket) => {
     socket.on('joinChat', (username) => {
+        users[socket.id] = username;  // Guardar el usuario con su socket id
         socket.username = username;
-        socket.emit('message', { text: `¡Bienvenido al chat, ${username}!`, fromServer: true });
-        socket.broadcast.emit('message', { text: `${username} se ha conectado al chat`, fromServer: true });
+        
+        socket.emit('message', { text: `¡Bienvenido ${username}!`, fromServer: true });
+        socket.broadcast.emit('message', { text: `${username} se ha conectado`, fromServer: true });
+        io.emit('updateUserList', Object.values(users));  // Enviar lista actualizada de usuarios
+    });
+
+    socket.on('disconnect', () => {
+        if (users[socket.id]) {
+            const username = users[socket.id];
+            delete users[socket.id];  // Eliminar el usuario del objeto
+            io.emit('message', { text: `${username} ha dejado el chat`, fromServer: true });
+            io.emit('updateUserList', Object.values(users));  // Enviar lista actualizada de usuarios
+        }
     });
 
     socket.on('sendMessage', (data) => {
@@ -24,14 +38,7 @@ io.on('connection', (socket) => {
         } else {
             io.emit('message', { text: data.text, username: socket.username, fromServer: false, id: socket.id });
         }
-    });
-    
-
-    socket.on('disconnect', () => {
-        if (socket.username) {
-            io.emit('message', { text: `${socket.username} ha dejado el chat`, fromServer: true });
-        }
-    });
+    }); 
 });
 
 
