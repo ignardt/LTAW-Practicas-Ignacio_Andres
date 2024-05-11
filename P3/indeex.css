@@ -1,0 +1,116 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #dcf8c6; /* Color de fondo similar a WhatsApp */
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 400px; /* Limitar el ancho del chat para una mejor lectura */
+    margin: auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.chat-header {
+    background-color: #286962; /* Color verde oscuro de WhatsApp */
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    list-style-type: none;
+    background-color: #e5ddd5; /* Color de fondo de los mensajes */
+}
+
+.chat-messages li {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 7.5px;
+    background-color: #ffffff; /* Burbujas de mensajes para el usuario */
+    align-self: flex-start; /* Alinea los mensajes a la izquierda */
+    max-width: 80%;
+    position: relative;
+}
+
+.chat-messages li.my-message {
+    background-color: #dcf8c6; /* Burbujas de mensajes del usuario actual */
+    align-self: flex-end; /* Alinea los mensajes a la derecha */
+}
+
+.chat-form {
+    display: flex;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.chat-form button {
+    background-color: #075e54; /* Botón de enviar al estilo WhatsApp */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.chat-form button:hover {
+    background-color: #064c43;
+}
+
+/* Estilos para mensajes del servidor */
+.server-message {
+    color: #056162; 
+    background-color: #eef9f8; 
+    border-left: 4px solid #34b7f1; 
+    padding: 8px 12px; 
+    border-radius: 10px; 
+    margin: 4px 0; 
+    font-style: italic; 
+    
+}
+
+/* Estilos para lista de usuarios conectados */
+.user-list {
+    width: 20%;
+    display: none;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.user-list h2 {
+    color: #333;
+}
+
+.user-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-list ul li {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-list ul li:last-child {
+    border-bottom: none;
+}

@@ -6,11 +6,12 @@ function enterChat() {
     if (username) {
         socket.emit('joinChat', username);
         document.getElementById('login-page').style.display = 'none';
-        document.getElementById('chat-container').style.display = 'block';
+        document.getElementById('chat-container').style.display = 'flex';
     } else {
         alert("Por favor, ingresa un nombre válido.");
     }
 }
+
 
 socket.on('connect', () => {
     mySocketId = socket.id;  // Almacena el ID del socket cuando el cliente se conecta
@@ -19,6 +20,11 @@ socket.on('connect', () => {
 socket.on('message', function(message) {
     const messages = document.getElementById('messages');
     const item = document.createElement('li');
+    if (message.from === mySocketId) {
+        item.classList.add('mine');
+    } else {
+        item.classList.add('theirs');
+    }
     if (typeof message === 'object') {
         if (message.fromServer) {
             item.textContent = message.text;
