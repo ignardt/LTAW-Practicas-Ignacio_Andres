@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const moment = require('moment'); // Asegúrate de que esta librería esté instalada.
+const moment = require('moment'); 
 
 const app = express();
 const server = http.createServer(app);
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         if (data.text.startsWith('/')) {
             handleCommand(data.text, socket);
         } else {
-            io.emit('message', { text: data.text, username: socket.username, fromServer: false, id: socket.id });
+            io.emit('message', { text: data.text, username: socket.username, fromServer: false, from: socket.id });
         }
     }); 
 });

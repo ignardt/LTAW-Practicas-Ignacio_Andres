@@ -22,16 +22,15 @@ socket.on('message', function(message) {
     const item = document.createElement('li');
     if (message.from === mySocketId) {
         item.classList.add('mine');
+    } else if (message.fromServer) {
+        item.classList.add('server-message');
+        item.textContent = message.text;
     } else {
         item.classList.add('theirs');
     }
-    if (typeof message === 'object') {
-        if (message.fromServer) {
-            item.textContent = message.text;
-            item.classList.add('server-message');
-        } else {
-            item.textContent = message.username + ": " + message.text;
-        }
+
+    if (!message.fromServer) {
+        item.textContent = `${message.username}: ${message.text}`;
     }
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
