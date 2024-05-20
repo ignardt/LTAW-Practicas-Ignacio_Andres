@@ -20,20 +20,20 @@ socket.on('connect', () => {
 socket.on('message', function(message) {
     const messages = document.getElementById('messages');
     const item = document.createElement('li');
+
     if (message.from === mySocketId) {
         item.classList.add('mine');
+        item.textContent = message.text;
     } else if (message.fromServer) {
         item.classList.add('server-message');
         item.textContent = message.text;
     } else {
         item.classList.add('theirs');
+        item.innerHTML = `<span class="username">${message.username}:</span> ${message.text}`;
     }
 
-    if (!message.fromServer) {
-        item.textContent = `${message.username}: ${message.text}`;
-    }
     messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    messages.scrollTop = messages.scrollHeight; 
 
     // Reproducir sonido solo si el mensaje es de otro usuario
     if (message.id !== mySocketId) {
@@ -45,12 +45,19 @@ socket.on('message', function(message) {
 socket.on('updateUserList', function(users) {
     const userList = document.getElementById('users');
     userList.innerHTML = '';  // Limpiar la lista actual
+    const currentUser = document.getElementById('username').value;
+
     users.forEach(user => {
         const userElement = document.createElement('li');
         userElement.textContent = user;
+        // Añadir clase específica si es el usuario actual
+        if (user === currentUser) {
+            userElement.classList.add('my-username');
+        }
         userList.appendChild(userElement);
     });
 });
+
 
 
 // Enviar mensajes al servidor

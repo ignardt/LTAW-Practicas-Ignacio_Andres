@@ -9,7 +9,7 @@
 body, html {
     height: 100%;
     font-family: Arial, sans-serif;
-    background: #9be2f8;
+    background: #ffffff;
 }
 
 /* Estilo de la página del formulario */
@@ -24,11 +24,11 @@ body, html {
 
 #login-form {
     padding: 20px;
-    background: #ffffff;
+    background: #80cffd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(14, 13, 13, 0.1);
+    box-shadow: 10px 10px 8px rgba(14, 13, 13, 0.2);
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 200px;
 }
 
 #login-form h2 {
@@ -40,7 +40,7 @@ body, html {
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 10px;
     background-color: #f0f5f7;
 }
 
@@ -49,8 +49,12 @@ body, html {
     background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
+}
+
+#login-form button:hover {
+    background-color: #06324c;
 }
 
 #chat-header {
@@ -76,12 +80,14 @@ body, html {
     width: 20%;             
     overflow-y: auto;         
     box-sizing: border-box;  
-    background-color: antiquewhite; 
+    background-color: #bff2ff; 
     margin: 50px 0px 100px 100px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 2px solid black;
+    box-shadow: 10px 10px 8px rgba(14, 13, 13, 0.2);
 }
 
 #user-list ul {
@@ -95,10 +101,15 @@ body, html {
     margin-bottom: 15px;
     border-radius: 10px;
     max-width: 100%;
-    background-color: #007BFF;
+    background-color: #2e5bad;
     text-align: center;
+    color: white;
 }
 
+#users li.my-username {
+    background-color: #1ca84b; 
+    color: white;
+}
 
 /* Área de chat */
 #chat-area {
@@ -106,10 +117,12 @@ body, html {
     background-color: #8db7ee; 
     margin: 50px 100px 100px 100px;
     border-radius: 20px;
-    padding: 20px 20px 20px 20px;
+    padding: 5px 20px 20px 20px;
     flex-grow: 1; 
     position: relative; 
     overflow-y: auto;
+    border: 2px solid black;
+    box-shadow: 10px 10px 8px rgba(14, 13, 13, 0.2);
 }
 
 
@@ -120,7 +133,6 @@ body, html {
     display: flex;
     flex-direction: column;
     height: 90%;
-    background-color: #dcf8c6;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -150,13 +162,15 @@ body, html {
 
 .mine {
     align-self: flex-end; 
-    background-color: #48573c; 
+    background-color: #1ca84b; 
+    color: white;
 
 }
 
 .theirs {
     align-self: flex-start; 
-    background-color: #f0f0f0; 
+    background-color: #2e5bad; 
+    color: white;
 }
 .server-message {
     color: #056162; 
@@ -168,15 +182,20 @@ body, html {
     align-self: center;
 }
 
+.username {
+    font-weight: bold;
+}
+
 .chat-form {
     display: flex;
-    padding: 10px;
+    padding: 20px;
     bottom: 0;
     left: 0;
     position: absolute;
     width: 100%;
-    margin: 0px 0px 10px 0px;
-    background-color: #056162;
+    margin: 0px 0px 0px 0px;
+    background-color: #bff2ff;
+    border-top: 2px solid black
 }
 
 .chat-form input {
