@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Información de la Aplicación</title>
+</head>
+<body>
+    <header>
+        <h1>Información de la Aplicación</h1>
+    </header>
+    <div id="info">
+        <p>Node.js version: <span id="node-version"></span></p>
+        <p>Chrome version: <span id="chrome-version"></span></p>
+        <p>Electron version: <span id="electron-version"></span></p>
+        <p>Chat URL: <span id="chat-url"></span></p>
+        <button id="open-chat">Abrir Chat</button>
+    </div>
+    <script>
+        window.electron.onAppInfo((info) => {
+            document.getElementById('node-version').textContent = info.nodeVersion;
+            document.getElementById('chrome-version').textContent = info.chromeVersion;
+            document.getElementById('electron-version').textContent = info.electronVersion;
+            document.getElementById('chat-url').textContent = `http://${info.ipAddress}:9090`;
+        });
+
+        document.getElementById('open-chat').addEventListener('click', () => {
+            window.electron.openChat();
+        });
+    </script>
+</body>
+</html>
+
