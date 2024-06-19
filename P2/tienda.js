@@ -9,24 +9,28 @@ const users = require('./tienda.json').Usuarios;
 http.createServer((req, res) => {
     console.log(`Request for ${req.url}`);
 
-    // Función para obtener cookies del encabezado de la solicitud
     function getCookies(req) {
         let cookies = {};
         req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
             let parts = cookie.match(/(.*?)=(.*)$/);
-            cookies[parts[1].trim()] = (parts[2] || '').trim();
+            if (parts) {
+                cookies[parts[1].trim()] = (parts[2] || '').trim();
+            }
         });
         return cookies;
     }
 
     let cookies = getCookies(req);
+    console.log('Cookies:', cookies); // <-- Verificar cookies recibidas
     let loggedInUser = cookies.loggedInUser ? JSON.parse(decodeURIComponent(cookies.loggedInUser)) : null;
+    console.log('LoggedInUser:', loggedInUser); // <-- Verificar el usuario logueado
 
     if (req.method === 'GET') {
         let filePath;
 
         switch (req.url) {
             case '/':
+            case '/index.html': // <-- Añadir caso para /index.html
                 filePath = path.join(__dirname, 'index.html');
                 break;
             case '/login.html':
@@ -34,7 +38,7 @@ http.createServer((req, res) => {
                 break;
             case '/logout':
                 loggedInUser = null;
-                res.setHeader('Set-Cookie', 'loggedInUser=; Max-Age=0');
+                res.setHeader('Set-Cookie', 'loggedInUser=; Max-Age=0; HttpOnly; Path=/');
                 res.writeHead(302, { 'Location': '/' });
                 res.end();
                 return;
@@ -79,10 +83,12 @@ http.createServer((req, res) => {
                 }
             } else {
                 res.writeHead(200, { 'Content-Type': contentType });
-                if (req.url === '/' && loggedInUser) {
-                    content = content.toString().replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`);
+                if ((req.url === '/' || req.url === '/index.html') && loggedInUser) {
+                    let modifiedContent = content.toString().replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`);
+                    res.end(modifiedContent, 'utf-8');
+                } else {
+                    res.end(content, 'utf-8');
                 }
-                res.end(content, 'utf-8');
                 console.log(`200 OK: ${req.url}`);
             }
         });
@@ -98,7 +104,7 @@ http.createServer((req, res) => {
             const user = users.find(user => user.nombre === username);
 
             if (user) {
-                res.setHeader('Set-Cookie', `loggedInUser=${encodeURIComponent(JSON.stringify(user))}; HttpOnly`);
+                res.setHeader('Set-Cookie', `loggedInUser=${encodeURIComponent(JSON.stringify(user))}; HttpOnly; Path=/`);
                 res.writeHead(302, { 'Location': '/' });
                 res.end();
             } else {
