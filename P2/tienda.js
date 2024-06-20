@@ -21,9 +21,7 @@ http.createServer((req, res) => {
     }
 
     let cookies = getCookies(req);
-    console.log('Cookies:', cookies); // <-- Verificar cookies recibidas
     let loggedInUser = cookies.loggedInUser ? JSON.parse(decodeURIComponent(cookies.loggedInUser)) : null;
-    console.log('LoggedInUser:', loggedInUser); // <-- Verificar el usuario logueado
 
     if (req.method === 'GET') {
         let filePath;
@@ -84,7 +82,9 @@ http.createServer((req, res) => {
             } else {
                 res.writeHead(200, { 'Content-Type': contentType });
                 if ((req.url === '/' || req.url === '/index.html') && loggedInUser) {
-                    let modifiedContent = content.toString().replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`);
+                    let modifiedContent = content.toString()
+                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
+                        .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
                     res.end(modifiedContent, 'utf-8');
                 } else {
                     res.end(content, 'utf-8');
@@ -100,8 +100,9 @@ http.createServer((req, res) => {
         req.on('end', () => {
             const postData = querystring.parse(body);
             const username = postData.username;
+            const password = postData.password; 
 
-            const user = users.find(user => user.nombre === username);
+            const user = users.find(user => user.nombre === username && user.password === password); // Verificar usuario y contraseña
 
             if (user) {
                 res.setHeader('Set-Cookie', `loggedInUser=${encodeURIComponent(JSON.stringify(user))}; HttpOnly; Path=/`);
@@ -109,7 +110,7 @@ http.createServer((req, res) => {
                 res.end();
             } else {
                 res.writeHead(401, { 'Content-Type': 'text/html' });
-                res.end('<h1>Usuario no encontrado</h1><a href="/login.html">Inténtalo de nuevo</a>');
+                res.end('<h1>Usuario o contraseña incorrectos</h1><a href="/login.html">Inténtalo de nuevo</a>');
             }
         });
     }

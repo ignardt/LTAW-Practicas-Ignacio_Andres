@@ -3,12 +3,14 @@
         {
             "nombre": "root",
             "nombre_real": "Administrador",
-            "correo": "admin@tienda.com"
+            "correo": "admin@tienda.com",
+            "password": "1"
         },
         {
             "nombre": "usuario1",
             "nombre_real": "Ignacio",
-            "correo": "ignacio.andres@tienda.com"
+            "correo": "ignacio.andres@tienda.com",
+            "password": "1"
         }
     ],
     "Productos": [
