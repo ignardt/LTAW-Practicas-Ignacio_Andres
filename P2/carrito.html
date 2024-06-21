@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito</title>
+</head>
+<body>
+    <h1>Tu Carrito</h1>
+    <ul id="cart-items">
+        <!-- Los elementos del carrito se insertarán aquí -->
+    </ul>
+    <a href="/" class="btn-back">Volver a la tienda</a>
+    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+    <button onclick="location.href='/checkout.html'">Finalizar Compra</button>
+
+    <script>
+        function vaciarCarrito() {
+            fetch('/vaciar-carrito', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Recargar la página para actualizar el contenido del carrito
+                } else {
+                    alert('Hubo un problema al vaciar el carrito');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
