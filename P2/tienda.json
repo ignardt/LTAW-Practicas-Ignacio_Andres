@@ -1,99 +1,111 @@
 {
-    "Usuarios": [
+  "Usuarios": [
+    {
+      "nombre": "root",
+      "nombre_real": "Administrador",
+      "correo": "admin@tienda.com",
+      "password": "1"
+    },
+    {
+      "nombre": "usuario1",
+      "nombre_real": "Ignacio",
+      "correo": "ignacio.andres@tienda.com",
+      "password": "1"
+    }
+  ],
+  "Productos": [
+    {
+      "nombre": "Let it Bleed",
+      "artista": "Rolling Stones",
+      "año": 1969,
+      "género": "Rock",
+      "precio": "29,99 €",
+      "cantidad_en_stock": 13,
+      "ruta": "/Productos/Producto1/producto1.html",
+      "discos": [
         {
-            "nombre": "root",
-            "nombre_real": "Administrador",
-            "correo": "admin@tienda.com",
-            "password": "1"
+          "titulo": "Disco: 1",
+          "canciones": [
+            "Gimme Shelter",
+            "Love In Vain",
+            "Country Honk",
+            "Live With Me",
+            "Let It Bleed"
+          ]
         },
         {
-            "nombre": "usuario1",
-            "nombre_real": "Ignacio",
-            "correo": "ignacio.andres@tienda.com",
-            "password": "1"
+          "titulo": "Disco: 2",
+          "canciones": [
+            "Midnight Rambler",
+            "You Got The Silver",
+            "Monkey Man",
+            "You Can't Always Get What You Want"
+          ]
         }
-    ],
-    "Productos": [
+      ]
+    },
+    {
+      "nombre": "Greatest Hits Vol. 1",
+      "artista": "Earth Wind & Fire",
+      "año": 1978,
+      "género": "Soul, Jazz, y Disco",
+      "precio": "34,99 €",
+      "cantidad_en_stock": 8,
+      "ruta": "/Productos/Producto2/producto2.html",
+      "discos": [
         {
-            "nombre": "Let it Bleed",
-            "artista": "Rolling Stones",
-            "año": 1969,
-            "género": "Rock",
-            "precio": "29,99 €",
-            "cantidad_en_stock": 13,
-            "discos": [
-                {
-                    "titulo": "Disco: 1",
-                    "canciones": ["Gimme Shelter", "Love In Vain", "Country Honk", "Live With Me", "Let It Bleed"]
-                },
-                {
-                    "titulo": "Disco: 2",
-                    "canciones": ["Midnight Rambler", "You Got The Silver", "Monkey Man", "You Can't Always Get What You Want"]
-                }
-            ]
-            
+          "titulo": "Disco: 1",
+          "canciones": [
+            "Got to Get You Into My Life",
+            "Fantasy",
+            "Can't Hide Love",
+            "Love Music",
+            "Getaway"
+          ]
         },
         {
-            "nombre": "Greatest Hits Vol. 1",
-            "artista": "Earth Wind & Fire",
-            "año": 1978,
-            "género": "Soul, Jazz, y Disco",
-            "precio": "34,99 €",
-            "cantidad_en_stock": 8,
-            "discos": [
-                {
-                    "titulo": "Disco: 1",
-                    "canciones": [
-                        "Got to Get You Into My Life",
-                        "Fantasy",
-                        "Can't Hide Love",
-                        "Love Music",
-                        "Getaway"
-                    ]
-                },
-                {
-                    "titulo": "Disco: 2",
-                    "canciones": [
-                        "That's the Way of the World",
-                        "September",
-                        "Shining Star",
-                        "Reasons",
-                        "Sing a Song"
-                    ]
-                }
-            ]
-        },
-        {
-            "nombre": "AC/DC Live",
-            "artista": "AC/DC",
-            "año": 1992,
-            "género": "Hard Rock",
-            "precio": "24,99 €",
-            "cantidad_en_stock": 15,
-            "discos": [
-                {
-                    "titulo": "Disco: 1",
-                    "canciones": [
-                        "Thunderstruck",
-                        "Shoot to Thrill",
-                        "Back In Black",
-                        "Sin City",
-                        "Who Made Who",
-                        "Fire Your Guns"
-                    ]
-                },
-                {
-                    "titulo": "Disco: 2",
-                    "canciones": [
-                        "Jailbreak",
-                        "The Jack",
-                        "Razors Edge",
-                        "Dirty Deeds Done Dirt Cheap"
-                    ]
-                }
-            ]
+          "titulo": "Disco: 2",
+          "canciones": [
+            "That's the Way of the World",
+            "September",
+            "Shining Star",
+            "Reasons",
+            "Sing a Song"
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "nombre": "AC/DC Live",
+      "artista": "AC/DC",
+      "año": 1992,
+      "género": "Hard Rock",
+      "precio": "24,99 €",
+      "cantidad_en_stock": 15,
+      "ruta": "/Productos/Producto3/producto3.html",
+      "discos": [
+        {
+          "titulo": "Disco: 1",
+          "canciones": [
+            "Thunderstruck",
+            "Shoot to Thrill",
+            "Back In Black",
+            "Sin City",
+            "Who Made Who",
+            "Fire Your Guns"
+          ]
+        },
+        {
+          "titulo": "Disco: 2",
+          "canciones": [
+            "Jailbreak",
+            "The Jack",
+            "Razors Edge",
+            "Dirty Deeds Done Dirt Cheap"
+          ]
+        }
+      ]
+    }
+  ],
+  "Pedidos": []
 }
-
-

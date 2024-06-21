@@ -6,6 +6,7 @@ const port = 9090;
 
 const users = require('./tienda.json').Usuarios;
 const productos = require('./tienda.json').Productos;
+let pedidos = require('./tienda.json').Pedidos;
 
 let carritos = {};
 
@@ -29,15 +30,14 @@ http.createServer((req, res) => {
     if (req.method === 'GET') {
         let filePath;
 
-        switch (req.url) {
-            case '/':
-            case '/index.html':
+        switch (true) {
+            case (req.url === '/' || req.url === '/index.html'):
                 filePath = path.join(__dirname, 'index.html');
                 break;
-            case '/login.html':
+            case req.url === '/login.html':
                 filePath = path.join(__dirname, 'login.html');
                 break;
-            case '/carrito.html':
+            case req.url === '/carrito.html':
                 if (loggedInUser) {
                     filePath = path.join(__dirname, 'carrito.html');
                 } else {
@@ -46,7 +46,7 @@ http.createServer((req, res) => {
                     return;
                 }
                 break;
-            case '/checkout.html':
+            case req.url === '/checkout.html':
                 if (loggedInUser) {
                     filePath = path.join(__dirname, 'checkout.html');
                 } else {
@@ -55,19 +55,34 @@ http.createServer((req, res) => {
                     return;
                 }
                 break;
-            case '/logout':
+            case req.url.startsWith('/search'):
+                const query = new URLSearchParams(req.url.split('?')[1]).get('query').toLowerCase();
+                const matches = productos.filter(producto => producto.nombre.toLowerCase().includes(query));
+                if (req.headers.accept && req.headers.accept.includes('application/json')) {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(matches));
+                } else if (matches.length > 0) {
+                    const matchedProduct = matches[0];
+                    res.writeHead(302, { 'Location': matchedProduct.ruta });
+                    res.end();
+                } else {
+                    res.writeHead(404, { 'Content-Type': 'text/html' });
+                    res.end('<h1>Producto no encontrado</h1><a href="/">Volver a la tienda</a>');
+                }
+                return;
+            case req.url === '/logout':
                 loggedInUser = null;
                 res.setHeader('Set-Cookie', 'loggedInUser=; Max-Age=0; HttpOnly; Path=/');
                 res.writeHead(302, { 'Location': '/' });
                 res.end();
                 return;
-            case '/producto1':
+            case req.url === '/producto1':
                 filePath = path.join(__dirname, 'Productos', 'Producto1', 'producto1.html');
                 break;
-            case '/producto2':
+            case req.url === '/producto2':
                 filePath = path.join(__dirname, 'Productos', 'Producto2', 'producto2.html');
                 break;
-            case '/producto3':
+            case req.url === '/producto3':
                 filePath = path.join(__dirname, 'Productos', 'Producto3', 'producto3.html');
                 break;
             default:
@@ -197,14 +212,44 @@ http.createServer((req, res) => {
             const cardNumber = postData.cardNumber;
             console.log(`Finalizando compra para ${loggedInUser.nombre} con dirección ${address} y tarjeta ${cardNumber}`);
 
-            // Aquí puedes agregar lógica para procesar el pago y el envío
+            // Guardar el pedido en la base de datos (tienda.json)
+            const pedido = {
+                usuario: loggedInUser.nombre,
+                direccion: address,
+                tarjeta: cardNumber,
+                productos: carritos[loggedInUser.nombre]
+            };
+            pedidos.push(pedido);
 
-            // Vaciar el carrito del usuario
-            carritos[loggedInUser.nombre] = [];
-            console.log(`Carrito de ${loggedInUser.nombre} después de finalizar la compra:`, carritos[loggedInUser.nombre]);
+            // Guardar los pedidos actualizados en el archivo tienda.json
+            fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
+                if (err) {
+                    console.error('Error al leer el archivo tienda.json:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
+                    return;
+                }
 
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: true }));
+                const tienda = JSON.parse(data);
+                tienda.Pedidos = pedidos;
+
+                fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
+                    if (err) {
+                        console.error('Error al escribir el archivo tienda.json:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
+                        return;
+                    }
+
+                    console.log('Pedido guardado correctamente');
+                    // Vaciar el carrito del usuario
+                    carritos[loggedInUser.nombre] = [];
+                    console.log(`Carrito de ${loggedInUser.nombre} después de finalizar la compra:`, carritos[loggedInUser.nombre]);
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true }));
+                });
+            });
         });
     }
 }).listen(port, () => {

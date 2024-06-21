@@ -12,6 +12,12 @@
         <img src="Fuentes/Title.webp" alt="Rolling Stones" style="height: 200px;">
     </div>
     
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Buscar producto..." onkeyup="searchProduct()">
+        <div id="suggestions" class="suggestions-box"></div>
+        <button onclick="searchProductPage()">Buscar</button>
+    </div>
+
     <div class="productos">
         <!-- Producto 1 -->
         <a href="Productos/Producto1/producto1.html" class="producto-enlace">
@@ -48,7 +54,39 @@
     <div id="cart-button-placeholder">
         <a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
     </div>
-        
+    <script>
+        function searchProduct() {
+            const input = document.getElementById('search-input').value;
+            if (input.length >= 3) {
+                fetch(`/search?query=${input}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let suggestions = document.getElementById('suggestions');
+                        suggestions.innerHTML = '';
+                        data.forEach(item => {
+                            let div = document.createElement('div');
+                            div.className = 'suggestion';
+                            div.innerHTML = item.nombre;
+                            div.onclick = () => {
+                                document.getElementById('search-input').value = item.nombre;
+                                suggestions.innerHTML = '';
+                            };
+                            suggestions.appendChild(div);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching suggestions:', error);
+                    });
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        }
+
+        function searchProductPage() {
+            const input = document.getElementById('search-input').value;
+            window.location.href = `/search?query=${input}`;
+        }
+    </script>
     
 
 </body>
