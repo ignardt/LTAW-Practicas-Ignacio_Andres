@@ -57,18 +57,11 @@ http.createServer((req, res) => {
                 break;
             case req.url.startsWith('/search'):
                 const query = new URLSearchParams(req.url.split('?')[1]).get('query').toLowerCase();
+                console.log('Search query:', query); // Log del query de búsqueda
                 const matches = productos.filter(producto => producto.nombre.toLowerCase().includes(query));
-                if (req.headers.accept && req.headers.accept.includes('application/json')) {
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify(matches));
-                } else if (matches.length > 0) {
-                    const matchedProduct = matches[0];
-                    res.writeHead(302, { 'Location': matchedProduct.ruta });
-                    res.end();
-                } else {
-                    res.writeHead(404, { 'Content-Type': 'text/html' });
-                    res.end('<h1>Producto no encontrado</h1><a href="/">Volver a la tienda</a>');
-                }
+                console.log('Matches found:', matches); // Log de los productos encontrados
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(matches));
                 return;
             case req.url === '/logout':
                 loggedInUser = null;
