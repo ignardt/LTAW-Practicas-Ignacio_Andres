@@ -27,3 +27,34 @@ color: brown;
     width: 60%;
     height: auto;
 }
+
+.search-container {
+    position: relative;
+    display: inline-block;
+}
+
+#search-input {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.suggestions-box {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}

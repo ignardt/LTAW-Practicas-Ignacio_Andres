@@ -5,38 +5,6 @@
     <title>Rhythm Records</title>
     <link rel="stylesheet" href="Fuentes/index.css">
     <link rel="icon" type="image/jpg" href="Fuentes/favicon.jpg">
-    <style>
-        .search-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        #search-input {
-            width: 200px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .suggestions-box {
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            width: 200px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .suggestion {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .suggestion:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
 </head>
 <body>
     <div class="titulo">
@@ -86,49 +54,5 @@
         <a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
     </div>
 
-    <script>
-        console.log('Script cargado correctamente'); // Log para verificar que el script se carga
-        function searchProduct() {
-            const input = document.getElementById('search-input').value;
-            const suggestionsBox = document.getElementById('suggestions');
-            console.log('Input value:', input); // Log del valor del input
-            if (input.length >= 3) {
-                fetch(`/search?query=${input}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Suggestions data:', data); // Log de los datos de sugerencias
-                        suggestionsBox.innerHTML = '';
-                        if (data.length > 0) {
-                            data.forEach(item => {
-                                let div = document.createElement('div');
-                                div.className = 'suggestion';
-                                div.innerHTML = item.nombre;
-                                div.onclick = () => {
-                                    document.getElementById('search-input').value = item.nombre;
-                                    suggestionsBox.innerHTML = '';
-                                    suggestionsBox.style.display = 'none';
-                                };
-                                suggestionsBox.appendChild(div);
-                            });
-                            suggestionsBox.style.display = 'block';
-                        } else {
-                            suggestionsBox.style.display = 'none';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching suggestions:', error);
-                    });
-            } else {
-                suggestionsBox.innerHTML = '';
-                suggestionsBox.style.display = 'none';
-            }
-        }
-
-        function searchProductPage() {
-            const input = document.getElementById('search-input').value;
-            console.log('Searching for:', input); // Log del valor de búsqueda
-            window.location.href = `/search?query=${input}`;
-        }
-    </script>
 </body>
 </html>

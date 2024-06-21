@@ -70,13 +70,9 @@ http.createServer((req, res) => {
                 res.end();
                 return;
             case req.url === '/producto1':
-                filePath = path.join(__dirname, 'Productos', 'Producto1', 'producto1.html');
-                break;
             case req.url === '/producto2':
-                filePath = path.join(__dirname, 'Productos', 'Producto2', 'producto2.html');
-                break;
             case req.url === '/producto3':
-                filePath = path.join(__dirname, 'Productos', 'Producto3', 'producto3.html');
+                filePath = path.join(__dirname, req.url);
                 break;
             default:
                 filePath = path.join(__dirname, req.url);
@@ -110,10 +106,10 @@ http.createServer((req, res) => {
                 }
             } else {
                 res.writeHead(200, { 'Content-Type': contentType });
-                if ((req.url === '/' || req.url === '/index.html') && loggedInUser) {
+                if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
                     let modifiedContent = content.toString()
                         .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
-                        .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
+                        .replace('<a href="/login.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
                     res.end(modifiedContent, 'utf-8');
                 } else if (req.url === '/carrito.html' && loggedInUser) {
                     console.log(`Generando contenido del carrito para ${loggedInUser.nombre}`);
