@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos Pendientes</title>
+    <link rel="icon" type="image/jpg" href="Fuentes/favicon.jpg">
+</head>
+<body>
+    <div class="titulo">
+        <h1>Pedidos Pendientes</h1>
+    </div>
+    <div id="pedidosContainer">
+        <!-- Los pedidos se cargarán aquí -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/pedidos-data')
+                .then(response => response.json())
+                .then(data => {
+                    const pedidosContainer = document.getElementById('pedidosContainer');
+                    if (data.length > 0) {
+                        data.forEach(pedido => {
+                            const pedidoDiv = document.createElement('div');
+                            pedidoDiv.className = 'pedido';
+                            pedidoDiv.innerHTML = `
+                                <h2>Pedido de ${pedido.usuario}</h2>
+                                <p><strong>Dirección:</strong> ${pedido.direccion}</p>
+                                <p><strong>Tarjeta:</strong> ${pedido.tarjeta}</p>
+                                <p><strong>Productos:</strong></p>
+                                <ul>
+                                    ${pedido.productos.map(producto => `<li>${producto}</li>`).join('')}
+                                </ul>
+                            `;
+                            pedidosContainer.appendChild(pedidoDiv);
+                        });
+                    } else {
+                        pedidosContainer.innerHTML = '<p>No hay pedidos pendientes.</p>';
+                    }
+                })
+                .catch(error => console.error('Error al cargar los pedidos:', error));
+        });
+    </script>
+</body>
+</html>

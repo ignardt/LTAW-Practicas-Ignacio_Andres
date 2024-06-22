@@ -55,11 +55,28 @@ http.createServer((req, res) => {
                     return;
                 }
                 break;
+            case req.url === '/ver-pedidos':
+                if (loggedInUser && loggedInUser.nombre === 'root') {
+                    filePath = path.join(__dirname, 'pedidos.html');
+                } else {
+                    res.writeHead(403, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
+                    return;
+                }
+                break;
+            case req.url === '/pedidos-data':
+                if (loggedInUser && loggedInUser.nombre === 'root') {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(pedidos));
+                    return;
+                } else {
+                    res.writeHead(403, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
+                    return;
+                }
             case req.url.startsWith('/search'):
                 const query = new URLSearchParams(req.url.split('?')[1]).get('query').toLowerCase();
-                console.log('Search query:', query); // Log del query de búsqueda
                 const matches = productos.filter(producto => producto.nombre.toLowerCase().includes(query));
-                console.log('Matches found:', matches); // Log de los productos encontrados
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(matches));
                 return;
@@ -110,14 +127,16 @@ http.createServer((req, res) => {
                     let modifiedContent = content.toString()
                         .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
                         .replace('<a href="/login.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
+                    
+                    if (loggedInUser.nombre === 'root') {
+                        modifiedContent = modifiedContent.replace('</body>', '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script></body>');
+                    }
+
                     res.end(modifiedContent, 'utf-8');
                 } else if (req.url === '/carrito.html' && loggedInUser) {
-                    console.log(`Generando contenido del carrito para ${loggedInUser.nombre}`);
                     let carrito = carritos[loggedInUser.nombre] || [];
                     let carritoHtml = carrito.map(producto => `<li>${producto}</li>`).join('');
-                    console.log('Carrito HTML generado:', carritoHtml); // Verificar el HTML generado
                     let modifiedContent = content.toString().replace('<ul id="cart-items">', `<ul id="cart-items">${carritoHtml}`);
-                    console.log('Contenido del carrito modificado:', modifiedContent); // Verificar el contenido modificado
                     res.end(modifiedContent, 'utf-8');
                 } else {
                     res.end(content, 'utf-8');
@@ -126,7 +145,6 @@ http.createServer((req, res) => {
             }
         });
     } else if (req.method === 'POST' && req.url === '/login') {
-
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -162,7 +180,6 @@ http.createServer((req, res) => {
         req.on('end', () => {
             const postData = JSON.parse(body);
             const productName = postData.product;
-            console.log(`Añadiendo producto al carrito: ${productName} para ${loggedInUser.nombre}`);
 
             let producto = productos.find(p => p.nombre === productName);
 
@@ -182,7 +199,6 @@ http.createServer((req, res) => {
                 carritos[loggedInUser.nombre] = [];
             }
             carritos[loggedInUser.nombre].push(productName);
-            console.log(`Carrito de ${loggedInUser.nombre}:`, carritos[loggedInUser.nombre]);
             producto.cantidad_en_stock -= 1;
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: true }));
@@ -210,12 +226,11 @@ http.createServer((req, res) => {
                         }
 
                         console.log(`Stock actualizado para ${productName}: ${producto.cantidad_en_stock}`);
-                        
                     });
 
                 }
             });
-        
+
         });
 
     } else if (req.method === 'POST' && req.url === '/vaciar-carrito') {
@@ -227,8 +242,6 @@ http.createServer((req, res) => {
 
         // Vaciar el carrito del usuario
         carritos[loggedInUser.nombre] = [];
-        console.log(`Carrito de ${loggedInUser.nombre} vaciado`);
-
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true }));
     } else if (req.method === 'POST' && req.url === '/finalizar-compra') {
@@ -246,7 +259,6 @@ http.createServer((req, res) => {
             const postData = JSON.parse(body);
             const address = postData.address;
             const cardNumber = postData.cardNumber;
-            console.log(`Finalizando compra para ${loggedInUser.nombre} con dirección ${address} y tarjeta ${cardNumber}`);
 
             // Guardar el pedido en la base de datos (tienda.json)
             const pedido = {
@@ -258,34 +270,32 @@ http.createServer((req, res) => {
             pedidos.push(pedido);
 
             // Guardar los pedidos actualizados en el archivo tienda.json
-        fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error al leer el archivo tienda.json:', err);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
-                return;
-            }
-
-            const tienda = JSON.parse(data);
-            tienda.Pedidos = pedidos;
-
-            fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
+            fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
                 if (err) {
-                    console.error('Error al escribir el archivo tienda.json:', err);
+                    console.error('Error al leer el archivo tienda.json:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
                     return;
                 }
 
-                console.log('Pedido guardado correctamente');
-                // Vaciar el carrito del usuario
-                carritos[loggedInUser.nombre] = [];
-                console.log(`Carrito de ${loggedInUser.nombre} después de finalizar la compra:`, carritos[loggedInUser.nombre]);
+                const tienda = JSON.parse(data);
+                tienda.Pedidos = pedidos;
 
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true }));
+                fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
+                    if (err) {
+                        console.error('Error al escribir el archivo tienda.json:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
+                        return;
+                    }
+
+                    console.log('Pedido guardado correctamente');
+                    // Vaciar el carrito del usuario
+                    carritos[loggedInUser.nombre] = [];
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true }));
+                });
             });
-        });
         });
     }
 }).listen(port, () => {
