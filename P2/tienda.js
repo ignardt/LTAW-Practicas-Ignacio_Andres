@@ -126,6 +126,7 @@ http.createServer((req, res) => {
             }
         });
     } else if (req.method === 'POST' && req.url === '/login') {
+
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -146,6 +147,7 @@ http.createServer((req, res) => {
                 res.end('<h1>Usuario o contraseña incorrectos</h1><a href="/login.html">Inténtalo de nuevo</a>');
             }
         });
+
     } else if (req.method === 'POST' && req.url === '/add-to-cart') {
         if (!loggedInUser) {
             res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -162,15 +164,60 @@ http.createServer((req, res) => {
             const productName = postData.product;
             console.log(`Añadiendo producto al carrito: ${productName} para ${loggedInUser.nombre}`);
 
+            let producto = productos.find(p => p.nombre === productName);
+
+            if (!producto) {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Producto no encontrado' }));
+                return;
+            }
+
+            if (producto.cantidad_en_stock <= 0) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Producto agotado' }));
+                return;
+            }
+
             if (!carritos[loggedInUser.nombre]) {
                 carritos[loggedInUser.nombre] = [];
             }
             carritos[loggedInUser.nombre].push(productName);
             console.log(`Carrito de ${loggedInUser.nombre}:`, carritos[loggedInUser.nombre]);
-
+            producto.cantidad_en_stock -= 1;
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: true }));
+
+            // Guardar el cambio de stock en la base de datos (tienda.json)
+            fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
+                if (err) {
+                    console.error('Error al leer el archivo tienda.json:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Error al actualizar el stock' }));
+                    return;
+                }
+
+                const tienda = JSON.parse(data);
+                const index = tienda.Productos.findIndex(p => p.nombre === productName);
+                if (index !== -1) {
+                    tienda.Productos[index].cantidad_en_stock = producto.cantidad_en_stock;
+
+                    fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
+                        if (err) {
+                            console.error('Error al escribir el archivo tienda.json:', err);
+                            res.writeHead(500, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ success: false, message: 'Error al actualizar el stock' }));
+                            return;
+                        }
+
+                        console.log(`Stock actualizado para ${productName}: ${producto.cantidad_en_stock}`);
+                        
+                    });
+
+                }
+            });
+        
         });
+
     } else if (req.method === 'POST' && req.url === '/vaciar-carrito') {
         if (!loggedInUser) {
             res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -211,34 +258,34 @@ http.createServer((req, res) => {
             pedidos.push(pedido);
 
             // Guardar los pedidos actualizados en el archivo tienda.json
-            fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
+        fs.readFile(path.join(__dirname, 'tienda.json'), 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error al leer el archivo tienda.json:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
+                return;
+            }
+
+            const tienda = JSON.parse(data);
+            tienda.Pedidos = pedidos;
+
+            fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
                 if (err) {
-                    console.error('Error al leer el archivo tienda.json:', err);
+                    console.error('Error al escribir el archivo tienda.json:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
                     return;
                 }
 
-                const tienda = JSON.parse(data);
-                tienda.Pedidos = pedidos;
+                console.log('Pedido guardado correctamente');
+                // Vaciar el carrito del usuario
+                carritos[loggedInUser.nombre] = [];
+                console.log(`Carrito de ${loggedInUser.nombre} después de finalizar la compra:`, carritos[loggedInUser.nombre]);
 
-                fs.writeFile(path.join(__dirname, 'tienda.json'), JSON.stringify(tienda, null, 2), (err) => {
-                    if (err) {
-                        console.error('Error al escribir el archivo tienda.json:', err);
-                        res.writeHead(500, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ success: false, message: 'Error al guardar el pedido' }));
-                        return;
-                    }
-
-                    console.log('Pedido guardado correctamente');
-                    // Vaciar el carrito del usuario
-                    carritos[loggedInUser.nombre] = [];
-                    console.log(`Carrito de ${loggedInUser.nombre} después de finalizar la compra:`, carritos[loggedInUser.nombre]);
-
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: true }));
-                });
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
             });
+        });
         });
     }
 }).listen(port, () => {

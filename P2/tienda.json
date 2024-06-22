@@ -20,7 +20,7 @@
       "año": 1969,
       "género": "Rock",
       "precio": "29,99 €",
-      "cantidad_en_stock": 13,
+      "cantidad_en_stock": 0,
       "ruta": "/Productos/Producto1/producto1.html",
       "discos": [
         {
@@ -50,7 +50,7 @@
       "año": 1978,
       "género": "Soul, Jazz, y Disco",
       "precio": "34,99 €",
-      "cantidad_en_stock": 8,
+      "cantidad_en_stock": 7,
       "ruta": "/Productos/Producto2/producto2.html",
       "discos": [
         {
