@@ -38,6 +38,9 @@ function addToCart(productName) {
     .then(data => {
         if (data.success) {
             alert('"Greatest Hits Vol. 1" ha sido añadido al carrito');
+            window.location.reload();
+        } else if (data.message === 'Producto agotado') {
+            alert('Este producto está agotado.');
         } else {
             alert('Inicie sesión para poder añadir productos al carrito');
         }
