@@ -126,8 +126,8 @@ http.createServer((req, res) => {
                 if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
                     let modifiedContent = content.toString()
                         .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h1>Bienvenido, ${loggedInUser.nombre_real}</h1><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
-                        .replace('<a href="/login.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
-                    
+                        .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
+
                     if (loggedInUser.nombre === 'root') {
                         modifiedContent = modifiedContent.replace('</body>', '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script></body>');
                     }
@@ -301,3 +301,4 @@ http.createServer((req, res) => {
 }).listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
+
