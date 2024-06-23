@@ -77,3 +77,24 @@ p {
 .suggestion:hover {
     background-color: #f0f0f0;
 }
+
+/* Archivo: producto.css */
+button {
+    background-color: #4CAF50; /* Color de fondo */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto */
+    padding: 15px 32px; /* Relleno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar en línea */
+    font-size: 16px; /* Tamaño de la fuente */
+    margin: 4px 2px; /* Márgenes */
+    cursor: pointer; /* Puntero del mouse */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición para el color de fondo */
+}
+
+/* Efecto al pasar el ratón por encima */
+button:hover {
+    background-color: #45a049; /* Color de fondo al pasar el ratón */
+}

@@ -58,3 +58,39 @@ color: brown;
 .suggestion:hover {
     background-color: #f0f0f0;
 }
+
+/* Archivo: producto.css */
+button {
+    background-color: #f56440; /* Color de fondo */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto */
+    padding: 15px 32px; /* Relleno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar en línea */
+    font-size: 16px; /* Tamaño de la fuente */
+    margin: 4px 2px; /* Márgenes */
+    cursor: pointer; /* Puntero del mouse */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición para el color de fondo */
+    
+}
+
+/* Efecto al pasar el ratón por encima */
+button:hover {
+    background-color: #f19f8b; /* Color de fondo al pasar el ratón */
+}
+
+.boton-imagen {
+    cursor: pointer; /* Cambia el cursor a pointer para indicar que es clicable */
+    padding: 0; /* Elimina el relleno del botón */
+    align-items: center;
+    height: 100px;
+    margin-top: 500px;
+   
+}
+.boton-imagen img {
+    height: 60px;
+    width: 60px; /* Ajusta el tamaño de la imagen dentro del botón */
+    padding-left: 25px;
+}
