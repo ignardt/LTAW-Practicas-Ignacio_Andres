@@ -132,9 +132,10 @@ http.createServer((req, res) => {
                         .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario: ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
                         .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
 
-                    if (loggedInUser.nombre === 'root') {
-                        modifiedContent = modifiedContent.replace('</body>', '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script></body>');
-                    }
+                        if (loggedInUser.nombre === 'root') {
+                            modifiedContent = modifiedContent.replace('<div id="admin-buttons-placeholder"></div>', 
+                                '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script>');
+                        }
 
                     res.end(modifiedContent, 'utf-8');
                 } else if (req.url === '/carrito.html' && loggedInUser) {

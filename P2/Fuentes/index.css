@@ -3,11 +3,42 @@ body {
 
 }
 .titulo {
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
+
+#loginlink {
+    position: absolute;
+    left: 100px;
+}
+
+.btn-login {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    background-color: #ec6847;
+    padding: 15px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 10px;
+}
+
+.btn-login:hover {
+    background-color: #f19f8b; 
+}
+
+.title-center {
+    flex-grow: 1;
+    text-align: center;
+}
+
+#cart-button-placeholder {
+    position: absolute;
+    right: 100px;
+ }
+
+
 
 h2 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -49,8 +80,7 @@ p {
 }
 
 .search-container {
-    position: relative;
-    display: inline-block;
+    text-align: center;
 }
 
 #search-input {
@@ -69,6 +99,7 @@ p {
     overflow-y: auto;
     z-index: 1000;
     display: none;
+    margin-left: 790px;
 }
 
 .suggestion {

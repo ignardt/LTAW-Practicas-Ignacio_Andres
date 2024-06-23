@@ -29,8 +29,8 @@ color: brown;
 }
 
 .search-container {
-    position: relative;
-    display: inline-block;
+    text-align: center;
+    padding-top:5px;
 }
 
 #search-input {
@@ -49,6 +49,7 @@ color: brown;
     overflow-y: auto;
     z-index: 1000;
     display: none;
+    margin-left: 780px;
 }
 
 .suggestion {

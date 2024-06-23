@@ -47,56 +47,6 @@ function addToCart(productName) {
     });
 }
 
-function searchProduct() {
-    const input = document.getElementById('search-input').value;
-    const suggestionsBox = document.getElementById('suggestions');
-    if (input.length >= 3) {
-        fetch(`/search?query=${input}`)
-            .then(response => response.json())
-            .then(data => {
-                suggestionsBox.innerHTML = '';
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        let div = document.createElement('div');
-                        div.className = 'suggestion';
-                        div.innerHTML = item.nombre;
-                        div.onclick = () => {
-                            document.getElementById('search-input').value = item.nombre;
-                            suggestionsBox.innerHTML = '';
-                            suggestionsBox.style.display = 'none';
-                        };
-                        suggestionsBox.appendChild(div);
-                    });
-                    suggestionsBox.style.display = 'block';
-                } else {
-                    suggestionsBox.style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching suggestions:', error);
-            });
-    } else {
-        suggestionsBox.innerHTML = '';
-        suggestionsBox.style.display = 'none';
-    }
-}
-
-function searchProductPage() {
-    const input = document.getElementById('search-input').value;
-    fetch(`/search?query=${input}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                window.location.href = data[0].ruta; 
-            } else {
-                console.error('Producto no encontrado');
-            }
-        })
-        .catch(error => {
-            console.error('Error searching product page:', error);
-        });
-}
-
 function redirectToCart() {
     fetch('/check-auth')
         .then(response => response.json())

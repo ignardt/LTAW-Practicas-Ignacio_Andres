@@ -8,13 +8,22 @@
 </head>
 <body>
     <div class="titulo">
-        <img src="Fuentes/Title.webp" alt="Rolling Stones" style="height: 200px;">
+        <div id="loginlink">
+            <a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>
+        </div>
+        <div class="title-center">
+            <img src="Fuentes/Title.webp" alt="Rolling Stones" style="height: 200px;">
+        </div>
+        <div id="cart-button-placeholder">
+            <a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
+        </div>
     </div>
     
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Buscar producto..." onkeyup="searchProduct()" autocomplete="off">
         <div id="suggestions" class="suggestions-box"></div>
         <button onclick="searchProductPage()">Buscar</button>
+        <div id="admin-buttons-placeholder"></div>
     </div>
 
     <div class="productos">
@@ -45,15 +54,7 @@
             </div>
         </a>
     </div>
-
-    <div>
-        <a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>
-    </div>
-        
-    <div id="cart-button-placeholder">
-        <a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
-    </div>
-
+   
     <script>
         function searchProduct() {
             const input = document.getElementById('search-input').value;
@@ -105,7 +106,24 @@
                 });
         }
 
-        
+        fetch('/check-auth')
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated && data.userRole === 'root') {
+                    const adminButtonsPlaceholder = document.getElementById('admin-buttons-placeholder');
+                    const button = document.createElement('button');
+                    button.id = 'verPedidosButton';
+                    button.textContent = 'Ver Pedidos Pendientes';
+                    button.addEventListener('click', function() {
+                        window.location.href = '/ver-pedidos';
+                    });
+                    adminButtonsPlaceholder.appendChild(button);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking auth:', error);
+            });
+
     </script>
 </body>
 </html>
