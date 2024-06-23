@@ -97,4 +97,19 @@ function searchProductPage() {
         });
 }
 
+function redirectToCart() {
+    fetch('/check-auth')
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                window.location.href = '/carrito.html';
+            } else {
+                window.location.href = '/login.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking auth:', error);
+        });
+}
+
 window.onload = cargarProductoEspecifico;

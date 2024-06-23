@@ -20,7 +20,7 @@
       "año": 1969,
       "género": "Rock",
       "precio": "29,99 €",
-      "cantidad_en_stock": 2,
+      "cantidad_en_stock": 0,
       "ruta": "/Productos/Producto1/producto1.html",
       "discos": [
         {
@@ -81,7 +81,7 @@
       "año": 1992,
       "género": "Hard Rock",
       "precio": "24,99 €",
-      "cantidad_en_stock": 10,
+      "cantidad_en_stock": 8,
       "ruta": "/Productos/Producto3/producto3.html",
       "discos": [
         {

@@ -11,6 +11,7 @@ body {
 
 h2 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: brown;
 }
 
 p {
@@ -53,6 +54,7 @@ p {
 }
 
 #search-input {
+    height: 20px;
     width: 200px;
     padding: 10px;
     margin: 10px 0;
@@ -80,21 +82,20 @@ p {
 
 /* Archivo: producto.css */
 button {
-    background-color: #4CAF50; /* Color de fondo */
-    border: none; /* Sin borde */
-    color: white; /* Color del texto */
-    padding: 15px 32px; /* Relleno */
-    text-align: center; /* Alineación del texto */
-    text-decoration: none; /* Sin subrayado */
-    display: inline-block; /* Mostrar en línea */
-    font-size: 16px; /* Tamaño de la fuente */
-    margin: 4px 2px; /* Márgenes */
-    cursor: pointer; /* Puntero del mouse */
-    border-radius: 8px; /* Bordes redondeados */
-    transition: background-color 0.3s; /* Transición para el color de fondo */
+    background-color: #f56440; 
+    border: none; 
+    color: white; 
+    padding: 15px 32px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
+    cursor: pointer; 
+    border-radius: 8px; 
+    transition: background-color 0.3s;  
 }
 
-/* Efecto al pasar el ratón por encima */
 button:hover {
-    background-color: #45a049; /* Color de fondo al pasar el ratón */
+    background-color: #f19f8b; 
 }

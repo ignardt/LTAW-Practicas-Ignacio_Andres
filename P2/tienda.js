@@ -46,6 +46,10 @@ http.createServer((req, res) => {
                     return;
                 }
                 break;
+            case req.url === '/check-auth':
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ authenticated: !!loggedInUser }));
+                    return;
             case req.url === '/checkout.html':
                 if (loggedInUser) {
                     filePath = path.join(__dirname, 'checkout.html');
