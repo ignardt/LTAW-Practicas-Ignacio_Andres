@@ -8,9 +8,17 @@
 </head>
 <body>
     <div class="titulo">
-        <a href="../../index.html">
-            <img src="../../Fuentes/Title.webp" style="height: 200px;" alt="Logo">
-        </a>
+        <div id="loginlink">
+            <a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>
+        </div>
+        <div class="title-center">
+            <a href="../../index.html">
+                <img src="../../Fuentes/Title.webp" style="height: 200px;" alt="Logo">
+            </a>
+        </div>
+        <div id="cart-button-placeholder">
+            <a href="#" onclick="redirectToCart()"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
+        </div>
     </div>
 
     <div class="producto">
@@ -23,14 +31,6 @@
         </button>
     </div>    
     
-    <div>
-        <a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>
-    </div>
-        
-    <div id="cart-button-placeholder">
-        <a href="#" onclick="redirectToCart()"><img src="../../Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>
-    </div>
-
     <script src="producto2.js"></script>
 </body>
 </html>

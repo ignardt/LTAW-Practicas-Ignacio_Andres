@@ -129,7 +129,7 @@ http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': contentType });
                 if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
                     let modifiedContent = content.toString()
-                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario: ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
+                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario:   ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
                         .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
 
                         if (loggedInUser.nombre === 'root') {

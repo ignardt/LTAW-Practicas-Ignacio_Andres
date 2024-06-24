@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Carrito</title>
+    <link rel="stylesheet" href="Fuentes/formulario.css">
+    <link rel="icon" type="image/jpg" href="Fuentes/favicon.jpg">
 </head>
 <body>
-    <h1>Tu Carrito</h1>
-    <ul id="cart-items">
-        <!-- Los elementos del carrito se insertarán aquí -->
+    <div class="titulo">
+        <a href="../../index.html">
+            <img src="../../Fuentes/Title.webp" style="height: 200px;" alt="Logo">
+        </a>
+    </div>
+    <h1>Carrito</h1>
+    <ul id="cart-items">  
     </ul>
-    <a href="/" class="btn-back">Volver a la tienda</a>
     <button onclick="vaciarCarrito()">Vaciar Carrito</button>
     <button onclick="location.href='/checkout.html'">Finalizar Compra</button>
 
@@ -24,7 +29,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload(); // Recargar la página para actualizar el contenido del carrito
+                    location.reload(); 
                 } else {
                     alert('Hubo un problema al vaciar el carrito');
                 }

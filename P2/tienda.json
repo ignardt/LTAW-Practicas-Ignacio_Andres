@@ -20,7 +20,7 @@
       "año": 1969,
       "género": "Rock",
       "precio": "29,99 €",
-      "cantidad_en_stock": 0,
+      "cantidad_en_stock": 2,
       "ruta": "/Productos/Producto1/producto1.html",
       "discos": [
         {
@@ -50,7 +50,7 @@
       "año": 1978,
       "género": "Soul, Jazz, y Disco",
       "precio": "34,99 €",
-      "cantidad_en_stock": 3,
+      "cantidad_en_stock": 0,
       "ruta": "/Productos/Producto2/producto2.html",
       "discos": [
         {
@@ -81,7 +81,7 @@
       "año": 1992,
       "género": "Hard Rock",
       "precio": "24,99 €",
-      "cantidad_en_stock": 8,
+      "cantidad_en_stock": 6,
       "ruta": "/Productos/Producto3/producto3.html",
       "discos": [
         {
@@ -115,6 +115,17 @@
       "productos": [
         "Let it Bleed",
         "Greatest Hits Vol. 1"
+      ]
+    },
+    {
+      "usuario": "root",
+      "direccion": "calle cuajao",
+      "tarjeta": "1234",
+      "productos": [
+        "AC/DC Live",
+        "AC/DC Live",
+        "Greatest Hits Vol. 1",
+        "Let it Bleed"
       ]
     }
   ]

@@ -4,10 +4,55 @@ body {
 }
 .titulo {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin-top: 1%;
+    padding: 10px;
 }
+
+#loginlink {
+    position: absolute;
+    left: 100px;
+}
+
+.btn-login {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    background-color: #ec6847;
+    padding: 15px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 10px;
+}
+
+.btn-login:hover {
+    background-color: #f19f8b; 
+}
+
+.btn-logout {
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    background-color: #ec6847;
+    padding: 15px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 10px;
+    margin-top: 100px;
+}
+
+.btn-logout:hover {
+    background-color: #f19f8b; 
+}
+
+.title-center {
+    flex-grow: 1;
+    text-align: center;
+}
+
+#cart-button-placeholder {
+    position: absolute;
+    right: 100px;
+ }
+
 h2 {
 color: brown;
 }
