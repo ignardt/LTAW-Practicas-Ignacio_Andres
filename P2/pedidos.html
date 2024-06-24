@@ -31,6 +31,7 @@
                                 <ul>
                                     ${pedido.productos.map(producto => `<li>${producto}</li>`).join('')}
                                 </ul>
+                                <p><strong>Total:</strong> ${pedido.total}</p>
                             `;
                             pedidosContainer.appendChild(pedidoDiv);
                         });

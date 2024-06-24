@@ -47,9 +47,9 @@ http.createServer((req, res) => {
                 }
                 break;
             case req.url === '/check-auth':
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ authenticated: !!loggedInUser }));
-                    return;
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ authenticated: !!loggedInUser }));
+                return;
             case req.url === '/checkout.html':
                 if (loggedInUser) {
                     filePath = path.join(__dirname, 'checkout.html');
@@ -76,6 +76,25 @@ http.createServer((req, res) => {
                 } else {
                     res.writeHead(403, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
+                    return;
+                }
+            case req.url === '/get-total':
+                if (loggedInUser) {
+                    const carrito = carritos[loggedInUser.nombre] || [];
+                    const total = carrito.reduce((sum, productName) => {
+                        const product = productos.find(p => p.nombre === productName);
+                        if (product) {
+                            const precio = parseFloat(product.precio.replace('€', '').replace(',', '.'));
+                            return sum + precio;
+                        }
+                        return sum;
+                    }, 0).toFixed(2);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ total: `${total} €` }));
+                    return;
+                } else {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'No autenticado' }));
                     return;
                 }
             case req.url.startsWith('/search'):
@@ -129,13 +148,13 @@ http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': contentType });
                 if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
                     let modifiedContent = content.toString()
-                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario:   ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
+                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario: ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
                         .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
 
-                        if (loggedInUser.nombre === 'root') {
-                            modifiedContent = modifiedContent.replace('<div id="admin-buttons-placeholder"></div>', 
-                                '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script>');
-                        }
+                    if (loggedInUser.nombre === 'root') {
+                        modifiedContent = modifiedContent.replace('<div id="admin-buttons-placeholder"></div>', 
+                            '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script>');
+                    }
 
                     res.end(modifiedContent, 'utf-8');
                 } else if (req.url === '/carrito.html' && loggedInUser) {
@@ -265,12 +284,24 @@ http.createServer((req, res) => {
             const address = postData.address;
             const cardNumber = postData.cardNumber;
 
+            // Calcular el total de la compra
+            const carrito = carritos[loggedInUser.nombre] || [];
+            const total = carrito.reduce((sum, productName) => {
+                const product = productos.find(p => p.nombre === productName);
+                if (product) {
+                    const precio = parseFloat(product.precio.replace('€', '').replace(',', '.'));
+                    return sum + precio;
+                }
+                return sum;
+            }, 0).toFixed(2);
+
             // Guardar el pedido en la base de datos (tienda.json)
             const pedido = {
                 usuario: loggedInUser.nombre,
                 direccion: address,
                 tarjeta: cardNumber,
-                productos: carritos[loggedInUser.nombre]
+                productos: carritos[loggedInUser.nombre],
+                total: `${total} €`
             };
             pedidos.push(pedido);
 
@@ -306,4 +337,3 @@ http.createServer((req, res) => {
 }).listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
-
