@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <title>Pedidos Pendientes</title>
     <link rel="icon" type="image/jpg" href="Fuentes/favicon.jpg">
+    <link rel="stylesheet" href="Fuentes/formulario.css">
 </head>
 <body>
     <div class="titulo">
-        <h1>Pedidos Pendientes</h1>
+        <a href="../../index.html">
+            <img src="../../Fuentes/Title.webp" style="height: 200px;" alt="Logo">
+        </a>
     </div>
+        <h1>Pedidos Pendientes</h1>
     <div id="pedidosContainer">
         <!-- Los pedidos se cargarán aquí -->
     </div>
@@ -36,7 +40,7 @@
                             pedidosContainer.appendChild(pedidoDiv);
                         });
                     } else {
-                        pedidosContainer.innerHTML = '<p>No hay pedidos pendientes.</p>';
+                        pedidosContainer.innerHTML = '<p>No hay pedidos pendientes</p>';
                     }
                 })
                 .catch(error => console.error('Error al cargar los pedidos:', error));

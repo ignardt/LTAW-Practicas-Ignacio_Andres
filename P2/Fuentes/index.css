@@ -24,7 +24,7 @@ body {
 }
 
 .btn-login:hover {
-    background-color: #f19f8b; 
+    background-color: #ee4d25; 
 }
 
 .btn-logout {
@@ -39,7 +39,7 @@ body {
 }
 
 .btn-logout:hover {
-    background-color: #f19f8b; 
+    background-color: #ee4d25; 
 }
 
 .title-center {
@@ -86,6 +86,11 @@ p {
     text-align: center; 
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(212, 184, 184);
+}
+
+.producto:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 .producto img {
     width: 50%; 
@@ -142,5 +147,7 @@ button {
 }
 
 button:hover {
-    background-color: #f19f8b; 
+    background-color: #ee4d25; 
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }

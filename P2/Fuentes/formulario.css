@@ -65,7 +65,9 @@ button, .btn-back {
 }
 
 button:hover, .btn-back:hover {
-    background-color: #f19f8b; 
+    background-color: #ee4d25; 
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 button:disabled, button[disabled] {
@@ -73,17 +75,6 @@ button:disabled, button[disabled] {
     cursor: not-allowed;
 }
 
-/* Estilos para el enlace */
-a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive design */
 @media (max-width: 600px) {
     #cart-items {
         width: 90%;
@@ -127,4 +118,48 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+#pedidosContainer {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pedido {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.pedido:last-child {
+    border-bottom: none;
+}
+
+/* Título del pedido */
+.pedido h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #f0aa42;
+}
+
+/* Detalles del pedido */
+.pedido p {
+    margin: 25px 0;
+}
+
+.pedido ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.pedido ul li {
+    background-color: #fceaea;
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
