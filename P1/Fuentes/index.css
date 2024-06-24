@@ -1,5 +1,7 @@
 body {
     background-color: rgb(255, 251, 233);
+    margin: 0;
+    padding: 0;
 
 }
 .titulo {
@@ -45,4 +47,15 @@ p {
     width: 50%; 
     height: auto; 
     margin-top: 20px;
+}
+
+footer {
+    background-color: #ee4d25;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 97%;
+    text-align: center;
+    padding-right: 100px;
 }

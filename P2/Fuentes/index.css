@@ -1,5 +1,7 @@
 body {
     background-color: rgb(255, 251, 233);
+    margin: 0;
+    padding: 0;
 }
 .titulo {
     display: flex;
@@ -150,4 +152,15 @@ button:hover {
     background-color: #ee4d25; 
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background-color: #ee4d25;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 97%;
+    text-align: center;
+    padding-right: 100px;
 }
