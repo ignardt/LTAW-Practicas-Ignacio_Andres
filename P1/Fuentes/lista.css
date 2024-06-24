@@ -1,0 +1,46 @@
+/* listado.css */
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #343a40;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+    background-color: #ee4d25;
+    color: white;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    margin: 10px auto;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+    transition: background-color 0.3s;
+}
+
+li:hover {
+    background-color: #f1f1f1;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

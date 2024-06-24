@@ -43,6 +43,11 @@ p {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(212, 184, 184);
 }
+
+.producto:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
 .producto img {
     width: 50%; 
     height: auto; 

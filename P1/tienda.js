@@ -10,6 +10,28 @@ http.createServer((req, res) => {
 
     let filePath;
 
+    if (req.url === '/ls') {
+        // Generar una lista de archivos en el directorio actual
+        fs.readdir(__dirname, (err, files) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/html' });
+                res.end('<h1>500 Internal Server Error</h1>');
+                console.error(`500 Internal Server Error: ${err.message}`); // Registrar el error 500 en la consola
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.write('<html><head><title>File List</title><link rel="stylesheet" type="text/css" href="Fuentes/lista.css"></head><body>');
+                res.write('<h1>List of Files</h1>');
+                res.write('<ul>');
+                files.forEach(file => {
+                    res.write(`<li>${file}</li>`);
+                });
+                res.write('</ul>');
+                res.write('</body></html>');
+                res.end();
+                console.log(`200 OK: ${req.url}`); // Registrar un éxito 200 en la consola
+            }
+        });
+    } else {
     // Determinar la ruta del archivo basada en la solicitud URL.
     switch (req.url) {
         case '/':
@@ -65,7 +87,7 @@ http.createServer((req, res) => {
         }
     });
     
-}).listen(port, () => {
+}}).listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
 
