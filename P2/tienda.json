@@ -4,13 +4,13 @@
       "nombre": "root",
       "nombre_real": "Administrador",
       "correo": "admin@tienda.com",
-      "password": "1"
+      "password": "1234"
     },
     {
       "nombre": "usuario1",
       "nombre_real": "Ignacio",
       "correo": "ignacio.andres@tienda.com",
-      "password": "1"
+      "password": "1234"
     }
   ],
   "Productos": [
@@ -20,7 +20,7 @@
       "año": 1969,
       "género": "Rock",
       "precio": "29,99 €",
-      "cantidad_en_stock": 4,
+      "cantidad_en_stock": 5,
       "ruta": "/Productos/Producto1/producto1.html",
       "discos": [
         {
@@ -50,7 +50,7 @@
       "año": 1978,
       "género": "Soul, Jazz, y Disco",
       "precio": "34,99 €",
-      "cantidad_en_stock": 4,
+      "cantidad_en_stock": 5,
       "ruta": "/Productos/Producto2/producto2.html",
       "discos": [
         {
@@ -81,7 +81,7 @@
       "año": 1992,
       "género": "Hard Rock",
       "precio": "24,99 €",
-      "cantidad_en_stock": 2,
+      "cantidad_en_stock": 5,
       "ruta": "/Productos/Producto3/producto3.html",
       "discos": [
         {

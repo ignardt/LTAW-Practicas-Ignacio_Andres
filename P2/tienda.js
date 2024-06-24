@@ -30,144 +30,167 @@ http.createServer((req, res) => {
     if (req.method === 'GET') {
         let filePath;
 
-        switch (true) {
-            case (req.url === '/' || req.url === '/index.html'):
-                filePath = path.join(__dirname, 'index.html');
-                break;
-            case req.url === '/login.html':
-                filePath = path.join(__dirname, 'login.html');
-                break;
-            case req.url === '/carrito.html':
-                if (loggedInUser) {
-                    filePath = path.join(__dirname, 'carrito.html');
+        if (req.url === '/ls') {
+            // Generar una lista de archivos en el directorio actual
+            fs.readdir(__dirname, (err, files) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/html' });
+                    res.end('<h1>500 Internal Server Error</h1>');
+                    console.error(`500 Internal Server Error: ${err.message}`); // Registrar el error 500 en la consola
                 } else {
-                    res.writeHead(302, { 'Location': '/login.html' });
-                    res.end();
-                    return;
-                }
-                break;
-            case req.url === '/check-auth':
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ authenticated: !!loggedInUser }));
-                return;
-            case req.url === '/checkout.html':
-                if (loggedInUser) {
-                    filePath = path.join(__dirname, 'checkout.html');
-                } else {
-                    res.writeHead(302, { 'Location': '/login.html' });
-                    res.end();
-                    return;
-                }
-                break;
-            case req.url === '/ver-pedidos':
-                if (loggedInUser && loggedInUser.nombre === 'root') {
-                    filePath = path.join(__dirname, 'pedidos.html');
-                } else {
-                    res.writeHead(403, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
-                    return;
-                }
-                break;
-            case req.url === '/pedidos-data':
-                if (loggedInUser && loggedInUser.nombre === 'root') {
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify(pedidos));
-                    return;
-                } else {
-                    res.writeHead(403, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
-                    return;
-                }
-            case req.url === '/get-total':
-                if (loggedInUser) {
-                    const carrito = carritos[loggedInUser.nombre] || [];
-                    const total = carrito.reduce((sum, productName) => {
-                        const product = productos.find(p => p.nombre === productName);
-                        if (product) {
-                            const precio = parseFloat(product.precio.replace('€', '').replace(',', '.'));
-                            return sum + precio;
-                        }
-                        return sum;
-                    }, 0).toFixed(2);
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ total: `${total} €` }));
-                    return;
-                } else {
-                    res.writeHead(401, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: false, message: 'No autenticado' }));
-                    return;
-                }
-            case req.url.startsWith('/search'):
-                const query = new URLSearchParams(req.url.split('?')[1]).get('query').toLowerCase();
-                const matches = productos.filter(producto => producto.nombre.toLowerCase().includes(query));
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify(matches));
-                return;
-            case req.url === '/logout':
-                loggedInUser = null;
-                res.setHeader('Set-Cookie', 'loggedInUser=; Max-Age=0; HttpOnly; Path=/');
-                res.writeHead(302, { 'Location': '/' });
-                res.end();
-                return;
-            case req.url === '/producto1':
-            case req.url === '/producto2':
-            case req.url === '/producto3':
-                filePath = path.join(__dirname, req.url);
-                break;
-            default:
-                filePath = path.join(__dirname, req.url);
-                break;
-        }
-
-        let extname = String(path.extname(filePath)).toLowerCase();
-        let mimeTypes = {
-            '.html': 'text/html',
-            '.js': 'text/javascript',
-            '.css': 'text/css',
-            '.png': 'image/png',
-            '.jpg': 'image/jpeg',
-            '.gif': 'image/gif'
-        };
-
-        let contentType = mimeTypes[extname] || 'application/octet-stream';
-
-        fs.readFile(filePath, (error, content) => {
-            if (error) {
-                if (error.code == 'ENOENT') {
-                    fs.readFile(path.join(__dirname, 'error.html'), (error, content) => {
-                        res.writeHead(404, { 'Content-Type': 'text/html' });
-                        res.end(content, 'utf-8');
-                        console.log(`404 Not Found: ${req.url}`);
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.write('<html><head><title>File List</title><link rel="stylesheet" type="text/css" href="Fuentes/lista.css"></head><body>');
+                    res.write('<h1>List of Files</h1>');
+                    res.write('<ul>');
+                    files.forEach(file => {
+                        res.write(`<li>${file}</li>`);
                     });
-                } else {
-                    res.writeHead(500);
-                    res.end(`Sorry, check with the site admin for error: ${error.code} ..\n`);
-                    console.log(`500 Internal Server Error: ${error.code}`);
+                    res.write('</ul>');
+                    res.write('</body></html>');
+                    res.end();
+                    console.log(`200 OK: ${req.url}`); // Registrar un éxito 200 en la consola
                 }
-            } else {
-                res.writeHead(200, { 'Content-Type': contentType });
-                if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
-                    let modifiedContent = content.toString()
-                        .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario: ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
-                        .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
-
-                    if (loggedInUser.nombre === 'root') {
-                        modifiedContent = modifiedContent.replace('<div id="admin-buttons-placeholder"></div>', 
-                            '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script>');
+            });
+        } else {
+            switch (true) {
+                case (req.url === '/' || req.url === '/index.html'):
+                    filePath = path.join(__dirname, 'index.html');
+                    break;
+                case req.url === '/login.html':
+                    filePath = path.join(__dirname, 'login.html');
+                    break;
+                case req.url === '/carrito.html':
+                    if (loggedInUser) {
+                        filePath = path.join(__dirname, 'carrito.html');
+                    } else {
+                        res.writeHead(302, { 'Location': '/login.html' });
+                        res.end();
+                        return;
                     }
-
-                    res.end(modifiedContent, 'utf-8');
-                } else if (req.url === '/carrito.html' && loggedInUser) {
-                    let carrito = carritos[loggedInUser.nombre] || [];
-                    let carritoHtml = carrito.map(producto => `<li>${producto}</li>`).join('');
-                    let modifiedContent = content.toString().replace('<ul id="cart-items">', `<ul id="cart-items">${carritoHtml}`);
-                    res.end(modifiedContent, 'utf-8');
-                } else {
-                    res.end(content, 'utf-8');
-                }
-                console.log(`200 OK: ${req.url}`);
+                    break;
+                case req.url === '/check-auth':
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ authenticated: !!loggedInUser }));
+                    return;
+                case req.url === '/checkout.html':
+                    if (loggedInUser) {
+                        filePath = path.join(__dirname, 'checkout.html');
+                    } else {
+                        res.writeHead(302, { 'Location': '/login.html' });
+                        res.end();
+                        return;
+                    }
+                    break;
+                case req.url === '/ver-pedidos':
+                    if (loggedInUser && loggedInUser.nombre === 'root') {
+                        filePath = path.join(__dirname, 'pedidos.html');
+                    } else {
+                        res.writeHead(403, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
+                        return;
+                    }
+                    break;
+                case req.url === '/pedidos-data':
+                    if (loggedInUser && loggedInUser.nombre === 'root') {
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify(pedidos));
+                        return;
+                    } else {
+                        res.writeHead(403, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: false, message: 'No autorizado' }));
+                        return;
+                    }
+                case req.url === '/get-total':
+                    if (loggedInUser) {
+                        const carrito = carritos[loggedInUser.nombre] || [];
+                        const total = carrito.reduce((sum, productName) => {
+                            const product = productos.find(p => p.nombre === productName);
+                            if (product) {
+                                const precio = parseFloat(product.precio.replace('€', '').replace(',', '.'));
+                                return sum + precio;
+                            }
+                            return sum;
+                        }, 0).toFixed(2);
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ total: `${total} €` }));
+                        return;
+                    } else {
+                        res.writeHead(401, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: false, message: 'No autenticado' }));
+                        return;
+                    }
+                case req.url.startsWith('/search'):
+                    const query = new URLSearchParams(req.url.split('?')[1]).get('query').toLowerCase();
+                    const matches = productos.filter(producto => producto.nombre.toLowerCase().includes(query));
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(matches));
+                    return;
+                case req.url === '/logout':
+                    loggedInUser = null;
+                    res.setHeader('Set-Cookie', 'loggedInUser=; Max-Age=0; HttpOnly; Path=/');
+                    res.writeHead(302, { 'Location': '/' });
+                    res.end();
+                    return;
+                case req.url === '/producto1':
+                case req.url === '/producto2':
+                case req.url === '/producto3':
+                    filePath = path.join(__dirname, req.url);
+                    break;
+                default:
+                    filePath = path.join(__dirname, req.url);
+                    break;
             }
-        });
+
+            let extname = String(path.extname(filePath)).toLowerCase();
+            let mimeTypes = {
+                '.html': 'text/html',
+                '.js': 'text/javascript',
+                '.css': 'text/css',
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.gif': 'image/gif'
+            };
+
+            let contentType = mimeTypes[extname] || 'application/octet-stream';
+
+            fs.readFile(filePath, (error, content) => {
+                if (error) {
+                    if (error.code == 'ENOENT') {
+                        fs.readFile(path.join(__dirname, 'error.html'), (error, content) => {
+                            res.writeHead(404, { 'Content-Type': 'text/html' });
+                            res.end(content, 'utf-8');
+                            console.log(`404 Not Found: ${req.url}`);
+                        });
+                    } else {
+                        res.writeHead(500);
+                        res.end(`Sorry, check with the site admin for error: ${error.code} ..\n`);
+                        console.log(`500 Internal Server Error: ${error.code}`);
+                    }
+                } else {
+                    res.writeHead(200, { 'Content-Type': contentType });
+                    if ((req.url === '/' || req.url === '/index.html' || req.url === '/Productos/Producto1/producto1.html' || req.url === '/Productos/Producto2/producto2.html' || req.url === '/Productos/Producto3/producto3.html') && loggedInUser) {
+                        let modifiedContent = content.toString()
+                            .replace('<a href="/login.html" class="btn-login">Iniciar sesión / Registrarse</a>', `<h2>Usuario: ${loggedInUser.nombre_real}</h2><a href="/logout" class="btn-logout">Cerrar sesión</a>`)
+                            .replace('<a href="/login.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>', `<a href="/carrito.html"><img src="Fuentes/carrito.webp" style="height: 75px;" alt="Carrito" class="cart-button"></a>`);
+
+                        if (loggedInUser.nombre === 'root') {
+                            modifiedContent = modifiedContent.replace('<div id="admin-buttons-placeholder"></div>', 
+                                '<button id="verPedidosButton">Ver Pedidos Pendientes</button><script>document.getElementById("verPedidosButton").addEventListener("click", function() { window.location.href = "/ver-pedidos"; });</script>');
+                        }
+
+                        res.end(modifiedContent, 'utf-8');
+                    } else if (req.url === '/carrito.html' && loggedInUser) {
+                        let carrito = carritos[loggedInUser.nombre] || [];
+                        let carritoHtml = carrito.map(producto => `<li>${producto}</li>`).join('');
+                        let modifiedContent = content.toString().replace('<ul id="cart-items">', `<ul id="cart-items">${carritoHtml}`);
+                        res.end(modifiedContent, 'utf-8');
+                    } else {
+                        res.end(content, 'utf-8');
+                    }
+                    console.log(`200 OK: ${req.url}`);
+                }
+            });
+        }
     } else if (req.method === 'POST' && req.url === '/login') {
         let body = '';
         req.on('data', chunk => {
