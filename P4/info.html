@@ -13,6 +13,13 @@
         <p>Chrome version: <span id="chrome-version"></span></p>
         <p>Electron version: <span id="electron-version"></span></p>
         <p>Chat URL: <span id="chat-url"></span></p>
+        <p>Platform: <span id="platform"></span></p>
+        <p>Architecture: <span id="architecture"></span></p>
+        <p>Hostname: <span id="hostname"></span></p>
+        <p>Home Directory: <span id="home-dir"></span></p>
+        <p>Temporary Directory: <span id="temp-dir"></span></p>
+        <p>System Uptime: <span id="uptime"></span></p>
+        <div id="qr-code"></div> <!-- Añadir un div para el código QR -->
     </div>
     <script>
         window.electron.onAppInfo((info) => {
@@ -20,6 +27,19 @@
             document.getElementById('chrome-version').textContent = info.chromeVersion;
             document.getElementById('electron-version').textContent = info.electronVersion;
             document.getElementById('chat-url').textContent = `http://${info.ipAddress}:9090`;
+            document.getElementById('platform').textContent = info.platform;
+            document.getElementById('architecture').textContent = info.architecture;
+            document.getElementById('hostname').textContent = info.hostname;
+            document.getElementById('home-dir').textContent = info.homeDir;
+            document.getElementById('temp-dir').textContent = info.tempDir;
+            document.getElementById('uptime').textContent = `${Math.floor(info.uptime / 60)} minutes`;
+
+            // Solicitar el código QR
+            fetch('/qrcode')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('qr-code').innerHTML = data;
+                });
         });
 
         document.getElementById('open-chat').addEventListener('click', () => {
@@ -28,4 +48,3 @@
     </script>
 </body>
 </html>
-
