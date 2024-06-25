@@ -107,16 +107,5 @@
       ]
     }
   ],
-  "Pedidos": [
-    {
-      "usuario": "usuario1",
-      "direccion": "calle de prueba",
-      "tarjeta": "12345678",
-      "productos": [
-        "Let it Bleed",
-        "Greatest Hits Vol. 1"
-      ],
-      "total": "64.98 €"
-    }
-  ]
+  "Pedidos": []
 }
