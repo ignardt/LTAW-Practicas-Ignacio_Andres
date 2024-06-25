@@ -20,7 +20,7 @@
       "año": 1969,
       "género": "Rock",
       "precio": "29,99 €",
-      "cantidad_en_stock": 5,
+      "cantidad_en_stock": 0,
       "ruta": "/Productos/Producto1/producto1.html",
       "discos": [
         {
@@ -50,7 +50,7 @@
       "año": 1978,
       "género": "Soul, Jazz, y Disco",
       "precio": "34,99 €",
-      "cantidad_en_stock": 5,
+      "cantidad_en_stock": 3,
       "ruta": "/Productos/Producto2/producto2.html",
       "discos": [
         {
@@ -107,5 +107,16 @@
       ]
     }
   ],
-  "Pedidos": []
+  "Pedidos": [
+    {
+      "usuario": "usuario1",
+      "direccion": "calle de prueba",
+      "tarjeta": "12345678",
+      "productos": [
+        "Let it Bleed",
+        "Greatest Hits Vol. 1"
+      ],
+      "total": "64.98 €"
+    }
+  ]
 }
